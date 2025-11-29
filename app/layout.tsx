@@ -9,10 +9,7 @@ const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'Gaming Account Unban Service for Fortnite, LoL, WoW, and others',
-  description: 'Step-by-step guides to help you understand game bans, prepare strong
-    appeals, and protect your accounts in popular online games like
-    Escape from Tarkov, CS2, Apex Legends, FIFA / FC 25, War Thunder,
-    Rainbow Six Siege and more.',
+  description: 'Blog about travel and lifestyle',
   openGraph: {
     title: 'Travel with Samantha',
     description: 'Blog about travel and lifestyle',
