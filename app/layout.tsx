@@ -23,8 +23,11 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Travel with Samantha',
-    description: 'Blog about travel and lifestyle',
+    title: 'Game Ban Appeal & Account Recovery Guides-UnbanNow',
+    description: 'Step-by-step guides to help you understand game bans, prepare strong
+    appeals, and protect your accounts in popular online games like
+    Escape from Tarkov, CS2, Apex Legends, FIFA / FC 25, War Thunder,
+    Rainbow Six Siege and more.',
   },
 }
 
