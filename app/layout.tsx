@@ -8,7 +8,7 @@ import { Footer } from '@/components/footer'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Travel with Samantha',
+  title: 'Gaming Account Unban Service for Fortnite, LoL, WoW, and others',
   description: 'Blog about travel and lifestyle',
   openGraph: {
     title: 'Travel with Samantha',
