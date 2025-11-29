@@ -8,17 +8,25 @@ import { Footer } from '@/components/footer'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Gaming Account Unban Service for Fortnite, LoL, WoW, and others',
-  description: 'Blog about travel and lifestyle',
+  title: {
+    default: 'UnbanNow – Game Ban Appeal & Account Recovery Guides',
+    template: '%s | UnbanNow',
+  },
+  description:
+    'Step-by-step guides to help you understand game bans, prepare strong appeals, and protect your accounts in popular online games like Escape from Tarkov, CS2, Apex Legends, FIFA / FC 25, War Thunder, Rainbow Six Siege and more.',
   openGraph: {
-    title: 'Travel with Samantha',
-    description: 'Blog about travel and lifestyle',
+    title: 'UnbanNow – Game Ban Appeal & Account Recovery Guides',
+    description:
+      'Step-by-step guides to help you understand game bans, prepare strong appeals, and protect your accounts in popular online games like Escape from Tarkov, CS2, Apex Legends, FIFA / FC 25, War Thunder, Rainbow Six Siege and more.',
+    url: 'https://unbannow.vercel.app',
+    siteName: 'UnbanNow',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Travel with Samantha',
-    description: 'Blog about travel and lifestyle',
+    title: 'UnbanNow – Game Ban Appeal & Account Recovery Guides',
+    description:
+      'Step-by-step guides to help you understand game bans, prepare strong appeals, and protect your accounts in popular online games like Escape from Tarkov, CS2, Apex Legends, FIFA / FC 25, War Thunder, Rainbow Six Siege and more.',
   },
 }
 
