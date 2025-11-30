@@ -3,6 +3,7 @@ title: To the Ubisoft Player Support Team
 date: 2025-11-30T23:36:00.000+08:00
 excerpt: To the Ubisoft Player Support Team
 coverImage: /uploads/dota-2-unban-appeal-guide-825x458.webp
+coverImageAlt: To the Ubisoft Player Support Team
 author: Admin
 category: FPS & Tactical Shooter
 game: CS2
