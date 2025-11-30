@@ -1,3 +1,4 @@
+// lib/posts.ts
 import fs from 'fs'
 import path from 'path'
 import matter from 'gray-matter'
@@ -13,13 +14,15 @@ export interface Post {
   excerpt: string
   content: string
   coverImage: string
-  coverImageAlt?: string
   author: string
   category?: string
   tags?: string[]
   readTime?: string
+  // 这些字段是为了兼容你现在的站点和 CMS：
   game?: string
   type?: string
+  seoTitle?: string
+  seoDescription?: string
 }
 
 // 计算阅读时间
@@ -38,6 +41,7 @@ export async function getAllPosts(): Promise<Post[]> {
   }
 
   const fileNames = fs.readdirSync(postsDirectory)
+
   const allPostsData = await Promise.all(
     fileNames
       .filter((fileName) => fileName.endsWith('.md'))
@@ -48,11 +52,11 @@ export async function getAllPosts(): Promise<Post[]> {
 
         const { data, content } = matter(fileContents)
 
-        // 转换 markdown 为 HTML
+        // 转 markdown 为 HTML
         const processedContent = await remark().use(html).process(content)
         const contentHtml = processedContent.toString()
 
-        return {
+        const post: Post = {
           slug,
           title: data.title || '',
           date: data.date || new Date().toISOString(),
@@ -61,14 +65,17 @@ export async function getAllPosts(): Promise<Post[]> {
           coverImage:
             data.coverImage ||
             'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800',
-          coverImageAlt: data.coverImageAlt || data.title || '',
           author: data.author || 'Admin',
           category: data.category,
           tags: data.tags || [],
           readTime: data.readTime || calculateReadTime(content),
           game: data.game,
           type: data.type,
-        } as Post
+          seoTitle: data.seoTitle,
+          seoDescription: data.seoDescription,
+        }
+
+        return post
       })
   )
 
@@ -84,11 +91,11 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
 
     const { data, content } = matter(fileContents)
 
-    // 转换 markdown 为 HTML
+    // 转 markdown 为 HTML
     const processedContent = await remark().use(html).process(content)
     const contentHtml = processedContent.toString()
 
-    return {
+    const post: Post = {
       slug,
       title: data.title || '',
       date: data.date || new Date().toISOString(),
@@ -97,29 +104,31 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
       coverImage:
         data.coverImage ||
         'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800',
-      coverImageAlt: data.coverImageAlt || data.title || '',
       author: data.author || 'Admin',
       category: data.category,
       tags: data.tags || [],
       readTime: data.readTime || calculateReadTime(content),
       game: data.game,
       type: data.type,
+      seoTitle: data.seoTitle,
+      seoDescription: data.seoDescription,
     }
+
+    return post
   } catch (error) {
     return null
   }
 }
 
-// ✅ 根据分类获取文章（给 /category/[category] 用）
+// 根据分类获取文章
 export async function getPostsByCategory(category: string): Promise<Post[]> {
   const allPosts = await getAllPosts()
   return allPosts.filter(
-    (post) =>
-      post.category?.toLowerCase() === category.toLowerCase()
+    (post) => post.category?.toLowerCase() === category.toLowerCase()
   )
 }
 
-// ✅ 根据标签获取文章（如果你有 /tag/[tag] 页面，也会用到）
+// 根据标签获取文章
 export async function getPostsByTag(tag: string): Promise<Post[]> {
   const allPosts = await getAllPosts()
   return allPosts.filter((post) =>
