@@ -3,7 +3,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import { getAllPosts } from '@/lib/posts'
-import { getAllGames, getGameBySlug } from '@/lib/games'
+import { getGameBySlug, GAMES } from '@/lib/games'
 import { formatDate } from '@/lib/utils'
 
 type Props = {
@@ -12,10 +12,8 @@ type Props = {
   }
 }
 
-// 生成静态路径：从 content/games 读取所有游戏
 export async function generateStaticParams() {
-  const games = getAllGames()
-  return games.map((game) => ({ slug: game.slug }))
+  return GAMES.map((game) => ({ slug: game.slug }))
 }
 
 export default async function GamePage({ params }: Props) {
@@ -27,10 +25,10 @@ export default async function GamePage({ params }: Props) {
 
   const allPosts = await getAllPosts()
   const postsForGame = allPosts.filter(
-    (post) => post.game === game.slug // 确保文章 frontmatter 里有 game: <slug>
+    (post) => post.game === game.slug
   )
 
-  // 可选：按日期排序（最新在前）
+  // 按日期排序（最新在前）
   postsForGame.sort(
     (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
   )
@@ -44,7 +42,7 @@ export default async function GamePage({ params }: Props) {
             {game.coverImage ? (
               <Image
                 src={game.coverImage}
-                alt={game.name}
+                alt={game.coverImageAlt || game.name}
                 fill
                 className="object-cover"
               />
@@ -58,16 +56,12 @@ export default async function GamePage({ params }: Props) {
             <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
               {game.name}
             </h1>
-            {game.genre && (
-              <p className="text-blue-600 dark:text-blue-400 text-sm font-medium mb-3">
-                {game.genre}
-              </p>
-            )}
-            {game.description && (
-              <p className="text-gray-600 dark:text-gray-300 mb-4">
-                {game.description}
-              </p>
-            )}
+            <p className="text-blue-600 dark:text-blue-400 text-sm font-medium mb-3">
+              {game.genre}
+            </p>
+            <p className="text-gray-600 dark:text-gray-300 mb-4">
+              {game.description}
+            </p>
             <Link
               href="/games"
               className="text-sm text-gray-500 dark:text-gray-400 underline underline-offset-4"
@@ -96,7 +90,7 @@ export default async function GamePage({ params }: Props) {
                   <div className="relative h-40">
                     <Image
                       src={post.coverImage}
-                      alt={post.title}
+                      alt={post.coverImageAlt || post.title}
                       fill
                       className="object-cover"
                     />
