@@ -11,7 +11,7 @@ media_folder: "public/uploads"
 public_folder: "/uploads"
 
 collections:
-  # 文章
+  # 文章集合（Posts）
   - name: "posts"
     label: "Posts"
     label_singular: "Post"
@@ -24,8 +24,8 @@ collections:
     fields:
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Date", name: "date", widget: "datetime" }
-      - { label: "Excerpt", name: "excerpt", widget: "text" }
-      - { label: "Cover Image", name: "coverImage", widget: "image" }
+      - { label: "Excerpt", name: "excerpt", widget: "text", required: false }
+      - { label: "Cover Image", name: "coverImage", widget: "image", required: false }
       - { label: "Author", name: "author", widget: "string", default: "Admin" }
 
       - label: "Category"
@@ -82,7 +82,7 @@ collections:
 
       - { label: "Body", name: "body", widget: "markdown" }
 
-  # ✅ 新增：Games 集合，用来在后台维护游戏列表
+  # ✅ 游戏集合（Games）
   - name: "games"
     label: "Games"
     label_singular: "Game"
@@ -97,4 +97,6 @@ collections:
       - { label: "Slug (URL, e.g. escape-from-tarkov)", name: "slug", widget: "string" }
       - { label: "Genre", name: "genre", widget: "string", required: false }
       - { label: "Description", name: "description", widget: "text", required: false }
-      - { label: "Cover Image URL", name: "coverImage", widget: "string", required: false }
+
+      # ✅ 这里改成 image，可以上传本地图片 / 选择已有图片 / 或填 URL
+      - { label: "Cover Image", name: "coverImage", widget: "image", required: false }
