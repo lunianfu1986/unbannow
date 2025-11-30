@@ -13,11 +13,11 @@ export interface Post {
   excerpt: string
   content: string
   coverImage: string
+  coverImageAlt?: string
   author: string
   category?: string
   tags?: string[]
   readTime?: string
-  // 如果你有 game / type 字段，也可以在这里补上：
   game?: string
   type?: string
 }
@@ -28,17 +28,6 @@ function calculateReadTime(content: string): string {
   const wordCount = content.split(/\s+/).length
   const minutes = Math.ceil(wordCount / wordsPerMinute)
   return `${minutes} min read`
-}
-
-// 把 frontmatter 里的 date 统一转成字符串
-function normalizeDate(raw: unknown): string {
-  if (raw instanceof Date) {
-    return raw.toISOString()
-  }
-  if (typeof raw === 'string') {
-    return raw
-  }
-  return new Date().toISOString()
 }
 
 // 获取所有文章
@@ -63,18 +52,17 @@ export async function getAllPosts(): Promise<Post[]> {
         const processedContent = await remark().use(html).process(content)
         const contentHtml = processedContent.toString()
 
-        const date = normalizeDate(data.date)
-
         return {
           slug,
           title: data.title || '',
-          date,
+          date: data.date || new Date().toISOString(),
           excerpt: data.excerpt || '',
           content: contentHtml,
           coverImage:
             data.coverImage ||
             'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800',
-          author: data.author || 'Samantha',
+          coverImageAlt: data.coverImageAlt || data.title || '',
+          author: data.author || 'Admin',
           category: data.category,
           tags: data.tags || [],
           readTime: data.readTime || calculateReadTime(content),
@@ -100,18 +88,17 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
     const processedContent = await remark().use(html).process(content)
     const contentHtml = processedContent.toString()
 
-    const date = normalizeDate(data.date)
-
     return {
       slug,
       title: data.title || '',
-      date,
+      date: data.date || new Date().toISOString(),
       excerpt: data.excerpt || '',
       content: contentHtml,
       coverImage:
         data.coverImage ||
         'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800',
-      author: data.author || 'Samantha',
+      coverImageAlt: data.coverImageAlt || data.title || '',
+      author: data.author || 'Admin',
       category: data.category,
       tags: data.tags || [],
       readTime: data.readTime || calculateReadTime(content),
@@ -121,20 +108,4 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
   } catch (error) {
     return null
   }
-}
-
-// 根据分类获取文章
-export async function getPostsByCategory(category: string): Promise<Post[]> {
-  const allPosts = await getAllPosts()
-  return allPosts.filter(
-    (post) => post.category?.toLowerCase() === category.toLowerCase()
-  )
-}
-
-// 根据标签获取文章
-export async function getPostsByTag(tag: string): Promise<Post[]> {
-  const allPosts = await getAllPosts()
-  return allPosts.filter((post) =>
-    post.tags?.some((t) => t.toLowerCase() === tag.toLowerCase())
-  )
 }
