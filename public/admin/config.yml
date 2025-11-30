@@ -1,0 +1,102 @@
+local_backend: true
+
+backend:
+  name: github
+  repo: lunianfu1986/unbannow   # 你的 GitHub 仓库
+  branch: main                  # 或者你实际用的分支
+  base_url: https://unbannow.vercel.app
+  auth_endpoint: api/auth       # OAuth 接口
+
+media_folder: "public/uploads"
+public_folder: "/uploads"
+
+collections:
+  # 文章集合（Posts）
+  - name: "posts"
+    label: "Posts"
+    label_singular: "Post"
+    folder: "content/posts"
+    create: true
+    slug: "{{slug}}"
+    extension: "md"
+    format: "frontmatter"
+
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Date", name: "date", widget: "datetime" }
+      - { label: "Excerpt", name: "excerpt", widget: "text", required: false }
+      - { label: "Cover Image", name: "coverImage", widget: "image", required: false }
+      - { label: "Author", name: "author", widget: "string", default: "Admin" }
+
+      - label: "Category"
+        name: "category"
+        widget: "select"
+        options:
+          - { label: "FPS & Tactical Shooter", value: "FPS & Tactical Shooter" }
+          - { label: "MOBA", value: "MOBA" }
+          - { label: "Battle Royale", value: "Battle Royale" }
+          - { label: "MMO / Gacha", value: "MMO / Gacha" }
+          - { label: "Sports", value: "Sports" }
+          - { label: "Other", value: "Other" }
+
+      # ✅ 文章关联 Game：从 Games collection 里选择
+      - label: "Game"
+        name: "game"
+        widget: "relation"
+        collection: "games"          # 指向下面的 games 集合
+        search_fields: ["title", "slug"]
+        value_field: "slug"          # 写入到 frontmatter 的值，例如 "escape-from-tarkov"
+        display_fields: ["title"]    # 后台下拉里显示游戏名称
+        required: false
+
+      - label: "Type"
+        name: "type"
+        widget: "select"
+        options:
+          - { label: "News", value: "News" }
+          - { label: "Guide", value: "Guide" }
+          - { label: "Review", value: "Review" }
+          - { label: "Esports", value: "Esports" }
+
+      - { label: "Tags", name: "tags", widget: "list", default: [] }
+
+      - {
+          label: "Read Time (optional)",
+          name: "readTime",
+          widget: "string",
+          required: false,
+        }
+
+      - {
+          label: "SEO Title",
+          name: "seoTitle",
+          widget: "string",
+          required: false,
+        }
+      - {
+          label: "SEO Description",
+          name: "seoDescription",
+          widget: "text",
+          required: false,
+        }
+
+      - { label: "Body", name: "body", widget: "markdown" }
+
+  # ✅ 游戏集合（Games）
+  - name: "games"
+    label: "Games"
+    label_singular: "Game"
+    folder: "content/games"
+    create: true
+    slug: "{{slug}}"
+    extension: "md"
+    format: "frontmatter"
+
+    fields:
+      - { label: "Game Name", name: "title", widget: "string" }
+      - { label: "Slug (URL, e.g. escape-from-tarkov)", name: "slug", widget: "string" }
+      - { label: "Genre", name: "genre", widget: "string", required: false }
+      - { label: "Description", name: "description", widget: "text", required: false }
+
+      # ✅ 这里改成 image，可以上传本地图片 / 选择已有图片 / 或填 URL
+      - { label: "Cover Image", name: "coverImage", widget: "image", required: false }
