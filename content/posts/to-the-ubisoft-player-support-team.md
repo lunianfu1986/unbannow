@@ -1,11 +1,11 @@
 ---
 title: To the Ubisoft Player Support Team
-date: 2025-11-30T21:58:00.000+08:00
+date: 2025-11-30T22:16:00.000+08:00
 excerpt: To the Ubisoft Player Support Team
 coverImage: /uploads/dota-2-unban-appeal-guide-825x458.webp
 author: Admin
 category: FPS & Tactical Shooter
-game: rainbow-six-siege
+game: escape-from-tarkov
 type: Guide
 tags:
   - "3434"
