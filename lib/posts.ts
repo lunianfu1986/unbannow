@@ -1,3 +1,4 @@
+// lib/posts.ts
 import fs from 'fs'
 import path from 'path'
 import matter from 'gray-matter'
@@ -13,13 +14,15 @@ export interface Post {
   excerpt: string
   content: string
   coverImage: string
+  coverImageAlt?: string
   author: string
   category?: string
   tags?: string[]
   readTime?: string
-  // 如果你有 game / type 字段，也可以在这里补上：
   game?: string
   type?: string
+  seoTitle?: string
+  seoDescription?: string
 }
 
 // 计算阅读时间
@@ -30,17 +33,6 @@ function calculateReadTime(content: string): string {
   return `${minutes} min read`
 }
 
-// 把 frontmatter 里的 date 统一转成字符串
-function normalizeDate(raw: unknown): string {
-  if (raw instanceof Date) {
-    return raw.toISOString()
-  }
-  if (typeof raw === 'string') {
-    return raw
-  }
-  return new Date().toISOString()
-}
-
 // 获取所有文章
 export async function getAllPosts(): Promise<Post[]> {
   // 确保目录存在
@@ -49,6 +41,7 @@ export async function getAllPosts(): Promise<Post[]> {
   }
 
   const fileNames = fs.readdirSync(postsDirectory)
+
   const allPostsData = await Promise.all(
     fileNames
       .filter((fileName) => fileName.endsWith('.md'))
@@ -59,32 +52,35 @@ export async function getAllPosts(): Promise<Post[]> {
 
         const { data, content } = matter(fileContents)
 
-        // 转换 markdown 为 HTML
+        // 转 markdown 为 HTML
         const processedContent = await remark().use(html).process(content)
         const contentHtml = processedContent.toString()
 
-        const date = normalizeDate(data.date)
-
-        return {
+        const post: Post = {
           slug,
           title: data.title || '',
-          date,
+          date: data.date || new Date().toISOString(),
           excerpt: data.excerpt || '',
           content: contentHtml,
           coverImage:
             data.coverImage ||
             'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800',
-          author: data.author || 'Samantha',
+          coverImageAlt: data.coverImageAlt || data.title || '',
+          author: data.author || 'Admin',
           category: data.category,
           tags: data.tags || [],
           readTime: data.readTime || calculateReadTime(content),
           game: data.game,
           type: data.type,
-        } as Post
+          seoTitle: data.seoTitle,
+          seoDescription: data.seoDescription,
+        }
+
+        return post
       })
   )
 
-  // 按日期排序
+  // 按日期排序（新 -> 旧）
   return allPostsData.sort((a, b) => (a.date < b.date ? 1 : -1))
 }
 
@@ -96,28 +92,31 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
 
     const { data, content } = matter(fileContents)
 
-    // 转换 markdown 为 HTML
+    // 转 markdown 为 HTML
     const processedContent = await remark().use(html).process(content)
     const contentHtml = processedContent.toString()
 
-    const date = normalizeDate(data.date)
-
-    return {
+    const post: Post = {
       slug,
       title: data.title || '',
-      date,
+      date: data.date || new Date().toISOString(),
       excerpt: data.excerpt || '',
       content: contentHtml,
       coverImage:
         data.coverImage ||
         'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800',
-      author: data.author || 'Samantha',
+      coverImageAlt: data.coverImageAlt || data.title || '',
+      author: data.author || 'Admin',
       category: data.category,
       tags: data.tags || [],
       readTime: data.readTime || calculateReadTime(content),
       game: data.game,
       type: data.type,
+      seoTitle: data.seoTitle,
+      seoDescription: data.seoDescription,
     }
+
+    return post
   } catch (error) {
     return null
   }
