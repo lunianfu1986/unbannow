@@ -127,13 +127,13 @@ export default async function BlogPost({ params }: Props) {
 
       {/* Cover Image */}
       <div className="relative h-96 mb-12 rounded-2xl overflow-hidden">
-        <Image
-          src={post.coverImage}
-          alt={post.title}
-          fill
-          className="object-cover"
-          priority
-        />
+<Image
+  src={post.coverImage}
+  alt={post.coverImageAlt || post.title}
+  fill
+  className="object-cover"
+  priority
+/>
       </div>
 
       {/* Content */}
