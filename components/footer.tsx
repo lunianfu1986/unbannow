@@ -8,11 +8,10 @@ export function Footer() {
           {/* About Section */}
           <div>
             <h3 className="text-2xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-              Travel with Samantha
+              Unban Service for Gamers
             </h3>
             <p className="text-gray-300 text-base leading-relaxed">
-              Sharing travel stories, cultural experiences, and photography from around the world. 
-              Join us on our journey to explore new places and create unforgettable memories.
+              Unbannow is here to help you get back to the game you love! 
             </p>
           </div>
 
