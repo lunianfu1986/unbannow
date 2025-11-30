@@ -1,9 +1,10 @@
 // pages/api/callback.ts
-import type { VercelRequest, VercelResponse } from '@vercel/node'
+// @ts-nocheck
+
 import { createVercelCompleteHandler } from 'netlify-cms-oauth-provider-node'
 
 const handler = createVercelCompleteHandler({}, { useEnv: true })
 
-export default function callback(req: VercelRequest, res: VercelResponse) {
+export default function callback(req, res) {
   return handler(req, res)
 }
