@@ -193,7 +193,22 @@ Keep your gear safe:
 * Text overlays
 * Descriptive pins
 
-### Common Mistakes
+```
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 0 0% 100%;
+  --foreground: 0 0% 3.9%;
+  --border: 0 0% 89.8%;
+}
+
+.dark {
+  --background: 0 0% 3.9%;
+  --foreground: 0 0% 98%;
+  --border: 0 0% 14.9%;
+```
 
 Avoid these errors:
 
