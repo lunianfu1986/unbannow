@@ -15,7 +15,7 @@ const navItems = [
 ]
 
 export function Header() {
-  const pathname = usePathname()
+  const pathname = usePathname() ?? ''
 
   const isGamesActive =
     pathname === '/games' || pathname.startsWith('/games/')
