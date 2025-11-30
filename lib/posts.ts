@@ -72,7 +72,7 @@ export async function getAllPosts(): Promise<Post[]> {
       })
   )
 
-  // 按日期排序
+  // 按日期排序（新 -> 旧）
   return allPostsData.sort((a, b) => (a.date < b.date ? 1 : -1))
 }
 
@@ -108,4 +108,21 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
   } catch (error) {
     return null
   }
+}
+
+// ✅ 根据分类获取文章（给 /category/[category] 用）
+export async function getPostsByCategory(category: string): Promise<Post[]> {
+  const allPosts = await getAllPosts()
+  return allPosts.filter(
+    (post) =>
+      post.category?.toLowerCase() === category.toLowerCase()
+  )
+}
+
+// ✅ 根据标签获取文章（如果你有 /tag/[tag] 页面，也会用到）
+export async function getPostsByTag(tag: string): Promise<Post[]> {
+  const allPosts = await getAllPosts()
+  return allPosts.filter((post) =>
+    post.tags?.some((t) => t.toLowerCase() === tag.toLowerCase())
+  )
 }
