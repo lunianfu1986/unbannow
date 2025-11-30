@@ -1,0 +1,92 @@
+local_backend: true
+
+backend:
+  name: github
+  repo: lunianfu1986/unbannow   # 你的 GitHub 仓库
+  branch: main                  # 或者你实际用的分支
+  base_url: https://unbannow.vercel.app
+  auth_endpoint: api/auth       # 等会我们要实现的接口
+
+media_folder: "public/uploads"
+public_folder: "/uploads"
+
+collections:
+  - name: "posts"
+    label: "Posts"
+    label_singular: "Post"
+    folder: "content/posts"
+    create: true
+    slug: "{{slug}}"
+    extension: "md"
+    format: "frontmatter"
+
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Date", name: "date", widget: "datetime" }
+      - { label: "Excerpt", name: "excerpt", widget: "text" }
+      - { label: "Cover Image", name: "coverImage", widget: "image" }
+      - { label: "Author", name: "author", widget: "string", default: "Admin" }
+
+      - label: "Category"
+        name: "category"
+        widget: "select"
+        options:
+          - { label: "FPS & Tactical Shooter", value: "FPS & Tactical Shooter" }
+          - { label: "MOBA", value: "MOBA" }
+          - { label: "Battle Royale", value: "Battle Royale" }
+          - { label: "MMO / Gacha", value: "MMO / Gacha" }
+          - { label: "Sports", value: "Sports" }
+          - { label: "Other", value: "Other" }
+
+      - label: "Game"
+        name: "game"
+        widget: "select"
+        required: false
+        options:
+          - { label: "League of Legends", value: "league-of-legends" }
+          - { label: "Dota 2", value: "dota-2" }
+          - { label: "Counter-Strike 2", value: "counter-strike-2" }
+          - { label: "Valorant", value: "valorant" }
+          - { label: "Apex Legends", value: "apex-legends" }
+          - { label: "Fortnite", value: "fortnite" }
+          - { label: "Escape from Tarkov", value: "escape-from-tarkov" }
+          - { label: "Destiny 2", value: "destiny-2" }
+          - { label: "Genshin Impact", value: "genshin-impact" }
+          - { label: "Honkai: Star Rail", value: "honkai-star-rail" }
+          - { label: "FC 25 / FIFA", value: "fc-25" }
+          - { label: "War Thunder", value: "war-thunder" }
+          - { label: "Rainbow Six Siege", value: "rainbow-six-siege" }
+          - { label: "Other", value: "other" }
+
+      - label: "Type"
+        name: "type"
+        widget: "select"
+        options:
+          - { label: "News", value: "News" }
+          - { label: "Guide", value: "Guide" }
+          - { label: "Review", value: "Review" }
+          - { label: "Esports", value: "Esports" }
+
+      - { label: "Tags", name: "tags", widget: "list", default: [] }
+
+      - {
+          label: "Read Time (optional)",
+          name: "readTime",
+          widget: "string",
+          required: false,
+        }
+
+      - {
+          label: "SEO Title",
+          name: "seoTitle",
+          widget: "string",
+          required: false,
+        }
+      - {
+          label: "SEO Description",
+          name: "seoDescription",
+          widget: "text",
+          required: false,
+        }
+
+      - { label: "Body", name: "body", widget: "markdown" }
