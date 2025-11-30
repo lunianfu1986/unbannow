@@ -16,5 +16,5 @@ description: >-
   restoration of my account.
 
   From the day I first installed Rainbow Six Siege, I have taken great pride in playing within the spirit of fair competition. I have never used third‑party tools, macros, or any exploits to gain an advantage. The joy for me has always come from mastering each Operator’s unique mechanics, coordinating strategic pushes with teammates, and refining my reflexes through countless rounds of Ranked, Quick Play, and custom scrimmages. My gameplay history shows a consistent progression in skill, never a sudden and implausible spike that might indicate foul play. The statistics associated with my in‑game performance—moderate win / loss ratio, gradual improvement, and a realistic headshot percentage—are entirely in line with a dedicated but fair competitor.
-coverImage: https://images.unsplash.com/...
+coverImage: /uploads/3.png
 ---
