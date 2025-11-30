@@ -11,14 +11,13 @@ type Props = {
   params: { slug: string }
 }
 
-// 把标签文本转成 URL slug，例如：
-// "Escape from Tarkov" -> "escape-from-tarkov"
+// 标签转 slug，例如 "Escape from Tarkov" -> "escape-from-tarkov"
 function toTagSlug(str: string): string {
   return str
     .toLowerCase()
     .trim()
-    .replace(/\s+/g, '-') // 空格 -> -
-    .replace(/[^a-z0-9-]/g, '') // 去掉非英文字母数字和短横线
+    .replace(/\s+/g, '-')
+    .replace(/[^a-z0-9-]/g, '')
 }
 
 export async function generateStaticParams() {
@@ -129,7 +128,7 @@ export default async function BlogPost({ params }: Props) {
       <div className="relative h-96 mb-12 rounded-2xl overflow-hidden">
         <Image
           src={post.coverImage}
-          alt={post.title}
+          alt={post.coverImageAlt || post.title}
           fill
           className="object-cover"
           priority
