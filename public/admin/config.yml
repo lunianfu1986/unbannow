@@ -5,12 +5,13 @@ backend:
   repo: lunianfu1986/unbannow   # 你的 GitHub 仓库
   branch: main                  # 或者你实际用的分支
   base_url: https://unbannow.vercel.app
-  auth_endpoint: api/auth       # 等会我们要实现的接口
+  auth_endpoint: api/auth       # OAuth 接口
 
 media_folder: "public/uploads"
 public_folder: "/uploads"
 
 collections:
+  # 文章
   - name: "posts"
     label: "Posts"
     label_singular: "Post"
@@ -38,25 +39,15 @@ collections:
           - { label: "Sports", value: "Sports" }
           - { label: "Other", value: "Other" }
 
+      # ✅ 文章关联 Game：从 Games collection 里选择
       - label: "Game"
         name: "game"
-        widget: "select"
+        widget: "relation"
+        collection: "games"          # 指向下面的 games 集合
+        search_fields: ["title", "slug"]
+        value_field: "slug"          # 写入到 frontmatter 的值，例如 "escape-from-tarkov"
+        display_fields: ["title"]    # 后台下拉里显示游戏名称
         required: false
-        options:
-          - { label: "League of Legends", value: "league-of-legends" }
-          - { label: "Dota 2", value: "dota-2" }
-          - { label: "Counter-Strike 2", value: "counter-strike-2" }
-          - { label: "Valorant", value: "valorant" }
-          - { label: "Apex Legends", value: "apex-legends" }
-          - { label: "Fortnite", value: "fortnite" }
-          - { label: "Escape from Tarkov", value: "escape-from-tarkov" }
-          - { label: "Destiny 2", value: "destiny-2" }
-          - { label: "Genshin Impact", value: "genshin-impact" }
-          - { label: "Honkai: Star Rail", value: "honkai-star-rail" }
-          - { label: "FC 25 / FIFA", value: "fc-25" }
-          - { label: "War Thunder", value: "war-thunder" }
-          - { label: "Rainbow Six Siege", value: "rainbow-six-siege" }
-          - { label: "Other", value: "other" }
 
       - label: "Type"
         name: "type"
@@ -90,3 +81,20 @@ collections:
         }
 
       - { label: "Body", name: "body", widget: "markdown" }
+
+  # ✅ 新增：Games 集合，用来在后台维护游戏列表
+  - name: "games"
+    label: "Games"
+    label_singular: "Game"
+    folder: "content/games"
+    create: true
+    slug: "{{slug}}"
+    extension: "md"
+    format: "frontmatter"
+
+    fields:
+      - { label: "Game Name", name: "title", widget: "string" }
+      - { label: "Slug (URL, e.g. escape-from-tarkov)", name: "slug", widget: "string" }
+      - { label: "Genre", name: "genre", widget: "string", required: false }
+      - { label: "Description", name: "description", widget: "text", required: false }
+      - { label: "Cover Image URL", name: "coverImage", widget: "string", required: false }
