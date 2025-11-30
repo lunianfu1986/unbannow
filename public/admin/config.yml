@@ -2,8 +2,10 @@ local_backend: true
 
 backend:
   name: github
-  repo: lunianfu1986/unbannow
-  branch: main
+  repo: lunianfu1986/unbannow   # 你的 GitHub 仓库
+  branch: main                  # 或者你实际用的分支
+  base_url: https://unbannow.vercel.app
+  auth_endpoint: api/auth       # 等会我们要实现的接口
 
 media_folder: "public/uploads"
 public_folder: "/uploads"
