@@ -25,7 +25,16 @@ collections:
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Date", name: "date", widget: "datetime" }
       - { label: "Excerpt", name: "excerpt", widget: "text", required: false }
+
       - { label: "Cover Image", name: "coverImage", widget: "image", required: false }
+      # ✅ 封面图 alt 文本（可选）
+      - {
+          label: "Cover Image Alt (for SEO)",
+          name: "coverImageAlt",
+          widget: "string",
+          required: false,
+        }
+
       - { label: "Author", name: "author", widget: "string", default: "Admin" }
 
       - label: "Category"
@@ -39,14 +48,14 @@ collections:
           - { label: "Sports", value: "Sports" }
           - { label: "Other", value: "Other" }
 
-      # ✅ 文章关联 Game：从 Games collection 里选择
+      # 文章关联 Game：从 Games collection 里选择
       - label: "Game"
         name: "game"
         widget: "relation"
-        collection: "games"          # 指向下面的 games 集合
+        collection: "games"
         search_fields: ["title", "slug"]
-        value_field: "slug"          # 写入到 frontmatter 的值，例如 "escape-from-tarkov"
-        display_fields: ["title"]    # 后台下拉里显示游戏名称
+        value_field: "slug"
+        display_fields: ["title"]
         required: false
 
       - label: "Type"
@@ -82,7 +91,7 @@ collections:
 
       - { label: "Body", name: "body", widget: "markdown" }
 
-  # ✅ 游戏集合（Games）
+  # 游戏集合（Games）
   - name: "games"
     label: "Games"
     label_singular: "Game"
@@ -98,5 +107,10 @@ collections:
       - { label: "Genre", name: "genre", widget: "string", required: false }
       - { label: "Description", name: "description", widget: "text", required: false }
 
-      # ✅ 这里改成 image，可以上传本地图片 / 选择已有图片 / 或填 URL
       - { label: "Cover Image", name: "coverImage", widget: "image", required: false }
+      - {
+          label: "Cover Image Alt (for SEO)",
+          name: "coverImageAlt",
+          widget: "string",
+          required: false,
+        }
