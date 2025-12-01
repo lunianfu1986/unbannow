@@ -38,7 +38,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description: post.excerpt || siteConfig.description,
       type: 'article',
       publishedTime: post.date,
-      url: `${siteConfig.url}/${post.slug}`, // 这里不再带 /blog
+      url: `${siteConfig.url}/${post.slug}`, // 新 URL：不再带 /blog
       siteName: siteConfig.name,
       images: [post.coverImage],
     },
@@ -142,12 +142,13 @@ export default async function BlogPost({ params }: Props) {
           </h3>
           <div className="flex flex-wrap gap-2">
             {post.tags.map((tag) => (
-              <span
+              <Link
                 key={tag}
-                className="bg-gray-100 dark:bg-gray-800 px-4 py-2 rounded-full text-sm text-gray-700 dark:text-gray-300"
+                href={`/tag/${encodeURIComponent(tag)}`}
+                className="bg-gray-100 dark:bg-gray-800 px-4 py-2 rounded-full text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
               >
                 #{tag}
-              </span>
+              </Link>
             ))}
           </div>
         </div>
