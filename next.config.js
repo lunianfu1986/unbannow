@@ -1,21 +1,18 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // 允许 Next Image 加载 Unsplash 图片
   images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'images.unsplash.com',
-      },
-    ],
+    // 允许的图片域名（你现在用的是 Unsplash）
+    domains: ['images.unsplash.com'],
+    // 关闭 next/image 的内置优化，直接原图输出
+    unoptimized: true,
   },
 
-  // 让 /admin 自动跳转到 /admin/index.html
+  // 301 重定向：老地址 /blog/:slug -> 新地址 /:slug
   async redirects() {
     return [
       {
-        source: '/admin',
-        destination: '/admin/index.html',
+        source: '/blog/:slug',
+        destination: '/:slug',
         permanent: true,
       },
     ]
