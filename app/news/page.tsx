@@ -41,7 +41,7 @@ export default async function NewsPage() {
             const gameLabel = gameInfo?.shortName || gameInfo?.name
 
             return (
-              <Link key={post.slug} href={`/blog/${post.slug}`}>
+              <Link key={post.slug} href={`/${post.slug}`}>
                 <article className="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all hover:-translate-y-1">
                   <div className="relative h-48">
                     <Image
