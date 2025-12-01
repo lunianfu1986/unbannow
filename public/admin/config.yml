@@ -82,21 +82,23 @@ collections:
 
       - { label: "Body", name: "body", widget: "markdown" }
 
-  # ✅ 游戏集合（Games）
+# ✅ 游戏集合（Games）
   - name: "games"
     label: "Games"
     label_singular: "Game"
     folder: "content/games"
     create: true
-    slug: "{{slug}}"
+    # 👇 这行告诉 CMS：文件名根据标题自动生成（自动变成小写+连字符）
+    slug: "{{title}}"
     extension: "md"
     format: "frontmatter"
 
     fields:
       - { label: "Game Name", name: "title", widget: "string" }
-      - { label: "Slug (URL, e.g. escape-from-tarkov)", name: "slug", widget: "string" }
+      
+      # 👇 核心修改：变成隐藏字段，并自动引用系统生成的 slug
+      - { label: "Slug", name: "slug", widget: "hidden", default: "{{slug}}" }
+      
       - { label: "Genre", name: "genre", widget: "string", required: false }
       - { label: "Description", name: "description", widget: "text", required: false }
-
-      # ✅ 这里改成 image，可以上传本地图片 / 选择已有图片 / 或填 URL
       - { label: "Cover Image", name: "coverImage", widget: "image", required: false }
