@@ -23,3 +23,17 @@ const nextConfig = {
 }
 
 module.exports = nextConfig
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  async redirects() {
+    return [
+      {
+        source: '/blog/:slug',
+        destination: '/:slug',
+        permanent: true, // 301
+      },
+    ]
+  },
+}
+
+module.exports = nextConfig
