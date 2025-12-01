@@ -27,4 +27,4 @@ On the **checkout** page, there will be an option to select your **country**. Ch
 
 Then proceed to payment, select **Alipay** as your payment method, and once the purchase goes through successfully, your Steam store region will be switched back to the China region.
 
-One important thing to keep in mind: after a successful payment, **do not casually refund this game**, or your Steam account may easily get **flagged with a red mark** by Steam.
+One important thing to keep in mind: after a successful payment, **do not casually refund this game**, or your Steam account may easily get **flagged with a red mark** by Steam
