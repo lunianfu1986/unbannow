@@ -7,7 +7,7 @@ const nextConfig = {
     unoptimized: true,
   },
 
-  // 301 重定向：老地址 /blog/:slug -> 新地址 /:slug
+  // 301 重定向老地址 /blog/:slug -> 新地址 /:slug
   async redirects() {
     return [
       {
