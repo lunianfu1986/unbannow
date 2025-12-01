@@ -14,9 +14,17 @@ export type Game = {
 
 const gamesDirectory = path.join(process.cwd(), 'content/games')
 
+// 👇 核心修复：添加标准化函数
+function normalizeSlug(str: string): string {
+  return str
+    .toLowerCase()                 // 转小写
+    .trim()                        // 去除首尾空格
+    .replace(/\s+/g, '-')          // 把中间的空格变成连字符
+    .replace(/[^a-z0-9-]/g, '')    // 去掉特殊字符
+}
+
 // 读取所有游戏
 export function getAllGames(): Game[] {
-  // 如果还没创建 content/games 目录，就返回空数组，避免报错
   if (!fs.existsSync(gamesDirectory)) {
     return []
   }
@@ -35,11 +43,16 @@ export function getAllGames(): Game[] {
       const fileContents = fs.readFileSync(fullPath, 'utf8')
       const { data } = matter(fileContents)
 
-      // 如果 frontmatter 里没有写 slug，就用文件名做兜底
+      // 如果 frontmatter 里没有 slug，就用文件名
       const fallbackSlug = fileName.replace(/\.(mdx?|ya?ml)$/, '')
+      
+      // 读取原始 slug
+      const rawSlug = (data.slug as string) || fallbackSlug
 
       return {
-        slug: (data.slug as string) || fallbackSlug,
+        // 👇 核心修复：在这里强制转换 Slug
+        slug: normalizeSlug(rawSlug),
+        
         name: (data.title as string) || fallbackSlug,
         shortName: data.shortName as string | undefined,
         description: data.description as string | undefined,
@@ -48,12 +61,12 @@ export function getAllGames(): Game[] {
       }
     })
 
-  // 按名称排序，防止顺序乱
   return games.sort((a, b) => a.name.localeCompare(b.name))
 }
 
-// 根据 slug 获取单个游戏
 export function getGameBySlug(slug: string): Game | undefined {
   const games = getAllGames()
-  return games.find((g) => g.slug === slug)
+  // 👇 核心修复：比对时也使用标准化后的 slug
+  const targetSlug = normalizeSlug(slug)
+  return games.find((g) => g.slug === targetSlug)
 }
