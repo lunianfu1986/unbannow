@@ -93,19 +93,10 @@ collections:
     format: "frontmatter"
 
     fields:
-      # 游戏名称，比如：Escape from Tarkov
       - { label: "Game Name", name: "title", widget: "string" }
-
-      # ✅ 自动根据 Game Name 生成 slug（空格 → -，全部小写）
-      - label: "Slug (自动生成，一般不用改)"
-        name: "slug"
-        widget: "slug"
-        field: "title"
-        required: false
-        hint: "会根据 Game Name 自动生成 URL（空格变成 - ，自动小写）。"
-
+      - { label: "Slug (URL, e.g. escape-from-tarkov)", name: "slug", widget: "string" }
       - { label: "Genre", name: "genre", widget: "string", required: false }
       - { label: "Description", name: "description", widget: "text", required: false }
 
-      # ✅ 这里是封面图，可以上传本地图片 / 选择已有图片 / 或填 URL
+      # ✅ 这里改成 image，可以上传本地图片 / 选择已有图片 / 或填 URL
       - { label: "Cover Image", name: "coverImage", widget: "image", required: false }
