@@ -7,6 +7,13 @@ import { getPostBySlug, getAllPosts } from '@/lib/posts'
 import { formatDate } from '@/lib/utils'
 import type { Metadata } from 'next'
 import { siteConfig } from '@/lib/siteConfig'
+function toTagSlug(str: string): string {
+  return str
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, '-') // 把空格替换成 -
+    .replace(/[^a-z0-9-]/g, '') // 去掉特殊字符
+}
 
 type Props = {
   params: { slug: string }
