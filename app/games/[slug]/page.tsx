@@ -91,7 +91,7 @@ export default async function GamePage({ params }: Props) {
         ) : (
           <div className="grid md:grid-cols-2 gap-8">
             {postsForGame.map((post) => (
-              <Link key={post.slug} href={`/blog/${post.slug}`}>
+              <Link key={post.slug} href={`/${post.slug}`}>
                 <article className="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all hover:-translate-y-1">
                   <div className="relative h-40">
                     <Image
