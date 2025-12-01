@@ -1,59 +1,146 @@
 // lib/games.ts
-import fs from 'fs'
-import path from 'path'
-import matter from 'gray-matter'
 
 export type Game = {
   slug: string
   name: string
   shortName?: string
-  description?: string
-  genre?: string
+  description: string
+  genre: string
   coverImage?: string
 }
 
-const gamesDirectory = path.join(process.cwd(), 'content/games')
-
-// 读取所有游戏
-export function getAllGames(): Game[] {
-  // 如果还没创建 content/games 目录，就返回空数组，避免报错
-  if (!fs.existsSync(gamesDirectory)) {
-    return []
-  }
-
-  const fileNames = fs.readdirSync(gamesDirectory)
-
-  const games: Game[] = fileNames
-    .filter((file) =>
-      file.endsWith('.md') ||
-      file.endsWith('.mdx') ||
-      file.endsWith('.yml') ||
-      file.endsWith('.yaml')
-    )
-    .map((fileName) => {
-      const fullPath = path.join(gamesDirectory, fileName)
-      const fileContents = fs.readFileSync(fullPath, 'utf8')
-      const { data } = matter(fileContents)
-
-      // 如果 frontmatter 里没有写 slug，就用文件名做兜底
-      const fallbackSlug = fileName.replace(/\.(mdx?|ya?ml)$/, '')
-
-      return {
-        slug: (data.slug as string) || fallbackSlug,
-        name: (data.title as string) || fallbackSlug,
-        shortName: data.shortName as string | undefined,
-        description: data.description as string | undefined,
-        genre: data.genre as string | undefined,
-        coverImage: data.coverImage as string | undefined,
-      }
-    })
-
-  // 按名称排序，防止顺序乱
-  return games.sort((a, b) => a.name.localeCompare(b.name))
+/**
+ * 把任意字符串转成 URL 安全的 slug：
+ *  - 全小写
+ *  - 去掉首尾空格
+ *  - 空格变成 -
+ *  - 去掉非字母数字和 -
+ */
+function slugify(input: string): string {
+  return input
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, '-') // 连续空格 -> 一个 -
+    .replace(/[^a-z0-9-]/g, '') // 只保留字母数字和 -
 }
 
-// 根据 slug 获取单个游戏
+/**
+ * 这里是你维护的“原始游戏列表”
+ * 以后新增游戏，只要照着这里加一个对象就行：
+ *   - name 必填（可以有空格）
+ *   - slug 可以省略，如果省略，会自动根据 name 生成
+ */
+const RAW_GAMES: (Omit<Game, 'slug'> & { slug?: string })[] = [
+  {
+    slug: 'league-of-legends',
+    name: 'League of Legends',
+    shortName: 'LoL',
+    description:
+      'MOBA by Riot Games, 5v5 competitive matches with champions and objectives.',
+    genre: 'MOBA',
+    coverImage: '/images/games/league-of-legends.jpg',
+  },
+  {
+    slug: 'dota-2',
+    name: 'Dota 2',
+    description:
+      'Hardcore MOBA from Valve with deep mechanics and high skill ceiling.',
+    genre: 'MOBA',
+    coverImage: '/images/games/dota-2.jpg',
+  },
+  {
+    slug: 'counter-strike-2',
+    name: 'Counter-Strike 2',
+    shortName: 'CS2',
+    description: 'Tactical FPS with bomb defusal and competitive matchmaking.',
+    genre: 'FPS & Tactical Shooter',
+    coverImage: '/images/games/counter-strike-2.jpg',
+  },
+  {
+    slug: 'valorant',
+    name: 'Valorant',
+    description:
+      'Hero-based tactical shooter by Riot Games with unique agent abilities.',
+    genre: 'Hero Shooter / Tactical FPS',
+    coverImage: '/images/games/valorant.jpg',
+  },
+  {
+    slug: 'apex-legends',
+    name: 'Apex Legends',
+    description:
+      'Hero-based battle royale with fast movement and team-focused gameplay.',
+    genre: 'Battle Royale',
+    coverImage: '/images/games/apex-legends.jpg',
+  },
+  {
+    slug: 'fortnite',
+    name: 'Fortnite',
+    description: 'Battle royale and creative sandbox with frequent events and collabs.',
+    genre: 'Battle Royale',
+    coverImage: '/images/games/fortnite.jpg',
+  },
+  {
+    slug: 'escape-from-tarkov',
+    name: 'Escape from Tarkov',
+    description:
+      'Hardcore extraction shooter with realistic gunplay and complex economy.',
+    genre: 'Extraction Shooter',
+    coverImage: '/images/games/escape-from-tarkov.jpg',
+  },
+  {
+    slug: 'destiny-2',
+    name: 'Destiny 2',
+    description: 'Online looter-shooter with raids, dungeons, and seasonal content.',
+    genre: 'Looter Shooter / MMO-Lite',
+    coverImage: '/images/games/destiny-2.jpg',
+  },
+  {
+    slug: 'genshin-impact',
+    name: 'Genshin Impact',
+    description: 'Open-world ARPG gacha game by HoYoverse.',
+    genre: 'Action RPG / Gacha',
+    coverImage: '/images/games/genshin-impact.jpg',
+  },
+  {
+    slug: 'honkai-star-rail',
+    name: 'Honkai: Star Rail',
+    description: 'Turn-based space fantasy RPG by HoYoverse.',
+    genre: 'Turn-based RPG / Gacha',
+    coverImage: '/images/games/honkai-star-rail.jpg',
+  },
+  {
+    slug: 'fc-25',
+    name: 'EA SPORTS FC 25',
+    description: 'Football / soccer simulation game from EA Sports.',
+    genre: 'Sports',
+    coverImage: '/images/games/fc-25.jpg',
+  },
+  {
+    slug: 'war-thunder',
+    name: 'War Thunder',
+    description:
+      'Combined arms military MMO with air, ground, and naval battles.',
+    genre: 'Vehicular Combat / Simulation',
+    coverImage: '/images/games/war-thunder.jpg',
+  },
+  {
+    slug: 'rainbow-six-siege',
+    name: 'Rainbow Six Siege',
+    description:
+      'Tactical 5v5 shooter with destructible environments and operators.',
+    genre: 'Tactical Shooter',
+    coverImage: '/images/games/rainbow-six-siege.jpg',
+  },
+]
+
+// 真正对外导出的游戏列表：自动补好 slug，并做一次规范化
+export const GAMES: Game[] = RAW_GAMES.map((game) => ({
+  ...game,
+  slug: game.slug ? slugify(game.slug) : slugify(game.name),
+}))
+
+// 查找游戏时，也做一次规范化，防止大小写 / 空格问题导致 404
 export function getGameBySlug(slug: string): Game | undefined {
-  const games = getAllGames()
-  return games.find((g) => g.slug === slug)
+  const normalized = slugify(slug)
+  return GAMES.find((g) => g.slug === normalized)
 }
