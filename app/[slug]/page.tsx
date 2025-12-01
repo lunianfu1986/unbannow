@@ -151,9 +151,9 @@ export default async function BlogPost({ params }: Props) {
             {post.tags.map((tag) => (
               <Link
                 key={tag}
-                href={`/tag/${encodeURIComponent(tag)}`}
-                className="bg-gray-100 dark:bg-gray-800 px-4 py-2 rounded-full text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
-              >
+                href={`/tag/${toTagSlug(tag)}`}
+    className="bg-gray-100 dark:bg-gray-800 px-4 py-2 rounded-full text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+  >
                 #{tag}
               </Link>
             ))}
