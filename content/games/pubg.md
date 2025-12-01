@@ -1,9 +1,7 @@
 ---
 title: PUBG
 slug: PUBG
-genre: "PUBG: BATTLEGROUNDS is a battle royale that pits 100 players against
-  each other. Outplay your opponents to become the lone survivor. Play free
-  now!"
+genre: PUBG
 description: "PUBG: BATTLEGROUNDS is a battle royale that pits 100 players
   against each other. Outplay your opponents to become the lone survivor. Play
   free now!"
