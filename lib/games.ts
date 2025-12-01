@@ -25,10 +25,9 @@ function slugify(input: string): string {
 }
 
 /**
- * 这里是你维护的“原始游戏列表”
- * 以后新增游戏，只要照着这里加一个对象就行：
- *   - name 必填（可以有空格）
- *   - slug 可以省略，如果省略，会自动根据 name 生成
+ * 原始游戏列表：
+ *  - 以后新增游戏，只要在这里加一条即可
+ *  - slug 可以不写，省略时会自动根据 name 生成
  */
 const RAW_GAMES: (Omit<Game, 'slug'> & { slug?: string })[] = [
   {
@@ -44,7 +43,7 @@ const RAW_GAMES: (Omit<Game, 'slug'> & { slug?: string })[] = [
     slug: 'dota-2',
     name: 'Dota 2',
     description:
-      'Hardcore MOBA from Valve with deep mechanics and high skill ceiling.',
+      'Hardcore MOBA from Valve with deep mechanics and a high skill ceiling.',
     genre: 'MOBA',
     coverImage: '/images/games/dota-2.jpg',
   },
@@ -52,7 +51,8 @@ const RAW_GAMES: (Omit<Game, 'slug'> & { slug?: string })[] = [
     slug: 'counter-strike-2',
     name: 'Counter-Strike 2',
     shortName: 'CS2',
-    description: 'Tactical FPS with bomb defusal and competitive matchmaking.',
+    description:
+      'Tactical FPS with bomb defusal, competitive matchmaking, and skin economy.',
     genre: 'FPS & Tactical Shooter',
     coverImage: '/images/games/counter-strike-2.jpg',
   },
@@ -68,14 +68,15 @@ const RAW_GAMES: (Omit<Game, 'slug'> & { slug?: string })[] = [
     slug: 'apex-legends',
     name: 'Apex Legends',
     description:
-      'Hero-based battle royale with fast movement and team-focused gameplay.',
+      'Hero-based battle royale with fast movement and squad-focused gameplay.',
     genre: 'Battle Royale',
     coverImage: '/images/games/apex-legends.jpg',
   },
   {
     slug: 'fortnite',
     name: 'Fortnite',
-    description: 'Battle royale and creative sandbox with frequent events and collabs.',
+    description:
+      'Battle royale and creative sandbox with frequent events and collaborations.',
     genre: 'Battle Royale',
     coverImage: '/images/games/fortnite.jpg',
   },
@@ -83,15 +84,16 @@ const RAW_GAMES: (Omit<Game, 'slug'> & { slug?: string })[] = [
     slug: 'escape-from-tarkov',
     name: 'Escape from Tarkov',
     description:
-      'Hardcore extraction shooter with realistic gunplay and complex economy.',
+      'Hardcore extraction shooter with realistic gunplay, complex healing and economy.',
     genre: 'Extraction Shooter',
     coverImage: '/images/games/escape-from-tarkov.jpg',
   },
   {
     slug: 'destiny-2',
     name: 'Destiny 2',
-    description: 'Online looter-shooter with raids, dungeons, and seasonal content.',
-    genre: 'Looter Shooter / MMO-Lite',
+    description:
+      'Online looter-shooter with raids, dungeons, and seasonal live service content.',
+    genre: 'Looter Shooter / MMO-lite',
     coverImage: '/images/games/destiny-2.jpg',
   },
   {
@@ -127,19 +129,34 @@ const RAW_GAMES: (Omit<Game, 'slug'> & { slug?: string })[] = [
     slug: 'rainbow-six-siege',
     name: 'Rainbow Six Siege',
     description:
-      'Tactical 5v5 shooter with destructible environments and operators.',
+      'Tactical 5v5 shooter with destructible environments and unique operators.',
     genre: 'Tactical Shooter',
     coverImage: '/images/games/rainbow-six-siege.jpg',
   },
 ]
 
-// 真正对外导出的游戏列表：自动补好 slug，并做一次规范化
+/**
+ * 统一导出的游戏列表：
+ *  - 自动修正 slug（不管你在 RAW_GAMES 里写没写对，都会规范成合法 URL）
+ */
 export const GAMES: Game[] = RAW_GAMES.map((game) => ({
   ...game,
-  slug: game.slug ? slugify(game.slug) : slugify(game.name),
+  slug: slugify(game.slug ?? game.name),
 }))
 
-// 查找游戏时，也做一次规范化，防止大小写 / 空格问题导致 404
+/**
+ * 供页面使用的“获取全部游戏”方法
+ *  - /app/games/page.tsx
+ *  - /app/games/[slug]/page.tsx 里 import { getAllGames }
+ */
+export function getAllGames(): Game[] {
+  return GAMES
+}
+
+/**
+ * 根据 slug 获取单个游戏
+ *  - 传进来的 slug 也会做一次 slugify，避免大小写 / 空格导致 404
+ */
 export function getGameBySlug(slug: string): Game | undefined {
   const normalized = slugify(slug)
   return GAMES.find((g) => g.slug === normalized)
