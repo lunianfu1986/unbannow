@@ -18,5 +18,14 @@ const nextConfig = {
     ]
   },
 }
+async redirects() {
+    return [
+      {
+        source: '/admin',
+        destination: '/admin/index.html',
+        permanent: true, // 开启永久重定向 (308)
+      },
+    ]
+  },
 
 module.exports = nextConfig
