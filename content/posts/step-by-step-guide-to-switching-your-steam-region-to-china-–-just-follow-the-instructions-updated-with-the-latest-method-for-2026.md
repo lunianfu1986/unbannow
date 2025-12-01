@@ -3,7 +3,7 @@ title: Step-by-step guide to switching your Steam region to China – just follo
   the instructions. Updated with the latest method for 2026.
 date: 2025-12-01T16:16:00.000+08:00
 excerpt: Step-by-step guide to switching your Steam region to China – just
-  follow the instructions. Updated with the latest method for 2026.
+  follow the instructions. Updated with the latest method for 2026
 coverImage: /uploads/store_home_share.png
 author: Admin
 category: Other
