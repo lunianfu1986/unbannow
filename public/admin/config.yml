@@ -94,12 +94,7 @@ collections:
 
     fields:
       - { label: "Game Name", name: "title", widget: "string" }
-      - label: "Slug (URL, auto from Game Name)"
-        name: "slug"
-        widget: "slug"
-        field: "name"
-        required: true
-        hint: "Auto-generate from Game Name, spaces → '-' , all lowercase."
+      - { label: "Slug (URL, e.g. escape-from-tarkov)", name: "slug", widget: "string" }
       - { label: "Genre", name: "genre", widget: "string", required: false }
       - { label: "Description", name: "description", widget: "text", required: false }
 
