@@ -1,7 +1,7 @@
 ---
-title: CSGO/CS2 Appeal Letter Submission Steps
+title: CSGO/CS2 Appeal Letter Submission Steps 2025
 date: 2025-12-01T12:01:00.000+08:00
-excerpt: CSGO/CS2 Appeal Letter Submission Steps
+excerpt: CSGO/CS2 Appeal Letter Submission Steps 2025
 coverImage: /uploads/how-to-get-unbanned-from-counter.png
 author: Admin
 category: FPS & Tactical Shooter
@@ -12,6 +12,8 @@ tags:
   - csgo
   - CS2 Appeal
   - CS2 unban
+  - cs2 2025
+readTime: ""
 seoTitle: How to Get Unbanned from CS 2 in 2025 – VAC
 seoDescription: How to Get Unbanned from CS 2 in 2025 – VAC
 ---
