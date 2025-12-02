@@ -2,7 +2,7 @@
 title: How to unban steam account
 date: 2025-12-02T09:48:00.000+08:00
 excerpt: How to unban steam account
-coverImage: /uploads/store_home_share.png
+coverImage: /uploads/social-og.jpg
 author: Admin
 category: FPS & Tactical Shooter
 game: steam
