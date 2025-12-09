@@ -8,10 +8,10 @@ import { Footer } from '@/components/footer'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: {
-    default: 'UnbanNow – Game Ban Appeal & Account Recovery Guides',
-    template: '%s | UnbanNow',
-  },
+  // ✅ 已修改：去掉了 template 模版，现在只是一个普通的字符串
+  // 这样子页面（文章页）的标题就不会自动加上后缀了
+  title: 'UnbanNow – Game Ban Appeal & Account Recovery Guides',
+  
   description:
     'Step-by-step guides to help you understand game bans, prepare strong appeals, and protect your accounts in popular online games like Escape from Tarkov, CS2, Apex Legends, FIFA / FC 25, War Thunder, Rainbow Six Siege and more.',
   openGraph: {
