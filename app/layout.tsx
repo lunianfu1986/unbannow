@@ -10,21 +10,21 @@ const inter = Inter({ subsets: ['latin'] })
 export const metadata: Metadata = {
   // ✅ 已修改：去掉了 template 模版，现在只是一个普通的字符串
   // 这样子页面（文章页）的标题就不会自动加上后缀了
-  title: 'Game Ban Appeal and Account Recovery Guides-UnbanNow',
+  title: 'UnbanNow – Game Ban Appeal & Account Recovery Guides',
   
   description:
     'Step-by-step guides to help you understand game bans, prepare strong appeals, and protect your accounts in popular online games like Escape from Tarkov, CS2, Apex Legends, FIFA / FC 25, War Thunder, Rainbow Six Siege and more.',
   openGraph: {
-    title: 'Game Ban Appeal and Account Recovery Guides-UnbanNow',
+    title: 'UnbanNow – Game Ban Appeal & Account Recovery Guides',
     description:
-      'Step-by-step guides to help you understand game bans, prepare strong appeals, and protect your accounts in popular online games like Escape from Tarkov,CS2,DOTA2,PUBG,Apex Legends,FIFA / FC 25,War Thunder,Rainbow Six Siege and more.',
+      'Step-by-step guides to help you understand game bans, prepare strong appeals, and protect your accounts in popular online games like Escape from Tarkov, CS2, Apex Legends, FIFA / FC 25, War Thunder, Rainbow Six Siege and more.',
     url: 'https://unbannow.vercel.app',
     siteName: 'UnbanNow',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Game Ban Appeal and Account Recovery Guides-UnbanNow',
+    title: 'UnbanNow – Game Ban Appeal & Account Recovery Guides',
     description:
       'Step-by-step guides to help you understand game bans, prepare strong appeals, and protect your accounts in popular online games like Escape from Tarkov, CS2, Apex Legends, FIFA / FC 25, War Thunder, Rainbow Six Siege and more.',
   },
