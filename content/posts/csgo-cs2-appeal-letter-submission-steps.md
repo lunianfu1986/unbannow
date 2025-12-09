@@ -4,7 +4,7 @@ date: 2025-12-01T12:01:00.000+08:00
 excerpt: CSGO/CS2 Appeal Letter Submission Steps 2025
 coverImage: /uploads/how-to-get-unbanned-from-counter.png
 author: Admin
-category: FPS & Tactical Shooter
+category: FPS and Tactical Shooter
 game: Counter-Strike-2
 type: Guide
 tags:
