@@ -6,6 +6,7 @@ import html from 'remark-html'
 
 const postsDirectory = path.join(process.cwd(), 'content/posts')
 
+// 👇 1. 在这里给 TypeScript 增加类型定义
 export interface Post {
   slug: string
   title: string
@@ -17,9 +18,10 @@ export interface Post {
   category?: string
   tags?: string[]
   readTime?: string
-  // 如果你有 game / type 字段，也可以在这里补上：
   game?: string
   type?: string
+  seoTitle?: string        // 新增：SEO 标题
+  seoDescription?: string  // 新增：SEO 描述
 }
 
 // 计算阅读时间
@@ -43,7 +45,6 @@ function normalizeDate(raw: unknown): string {
 
 // 获取所有文章
 export async function getAllPosts(): Promise<Post[]> {
-  // 确保目录存在
   if (!fs.existsSync(postsDirectory)) {
     return []
   }
@@ -59,12 +60,12 @@ export async function getAllPosts(): Promise<Post[]> {
 
         const { data, content } = matter(fileContents)
 
-        // 转换 markdown 为 HTML
         const processedContent = await remark().use(html).process(content)
         const contentHtml = processedContent.toString()
 
         const date = normalizeDate(data.date)
 
+        // 👇 2. 在这里读取 Markdown 文件里的数据
         return {
           slug,
           title: data.title || '',
@@ -80,11 +81,12 @@ export async function getAllPosts(): Promise<Post[]> {
           readTime: data.readTime || calculateReadTime(content),
           game: data.game,
           type: data.type,
+          seoTitle: data.seoTitle,             // 读取 SEO 标题
+          seoDescription: data.seoDescription, // 读取 SEO 描述
         } as Post
       })
   )
 
-  // 按日期排序
   return allPostsData.sort((a, b) => (a.date < b.date ? 1 : -1))
 }
 
@@ -96,12 +98,12 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
 
     const { data, content } = matter(fileContents)
 
-    // 转换 markdown 为 HTML
     const processedContent = await remark().use(html).process(content)
     const contentHtml = processedContent.toString()
 
     const date = normalizeDate(data.date)
 
+    // 👇 3. 在这里也加上读取逻辑
     return {
       slug,
       title: data.title || '',
@@ -117,6 +119,8 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
       readTime: data.readTime || calculateReadTime(content),
       game: data.game,
       type: data.type,
+      seoTitle: data.seoTitle,             // 读取 SEO 标题
+      seoDescription: data.seoDescription, // 读取 SEO 描述
     }
   } catch (error) {
     return null
