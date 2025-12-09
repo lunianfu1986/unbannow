@@ -4,7 +4,7 @@ date: 2025-12-02T09:48:00.000+08:00
 excerpt: How to unban steam account
 coverImage: /uploads/social-og.jpg
 author: Admin
-category: FPS & Tactical Shooter
+category: FPS and Tactical Shooter
 game: steam
 type: Guide
 tags:
