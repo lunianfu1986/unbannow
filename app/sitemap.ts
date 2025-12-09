@@ -3,24 +3,21 @@ import { getAllPosts } from '@/lib/posts'
 import { getAllGames } from '@/lib/games'
 import { siteConfig } from '@/lib/siteConfig'
 
-// 辅助函数：转换 URL Slug
+// 这个函数会把 "FPS and Tactical Shooter" 变成 "fps-and-tactical-shooter"
 function toSlug(str: string): string {
   return str
     .toLowerCase()
     .trim()
-    .replace(/\s+/g, '-')
-    .replace(/[^a-z0-9-]/g, '')
+    .replace(/\s+/g, '-') // 把空格变成连字符 -
+    .replace(/[^a-z0-9-]/g, '') // 去掉所有特殊字符
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  // 确保使用你的正式域名，不要带末尾斜杠
   const baseUrl = 'https://www.unbannow.com'
 
-  // 1. 获取所有文章和游戏数据
   const posts = await getAllPosts()
   const games = getAllGames()
 
-  // 2. 提取分类和标签
   const categories = new Set<string>()
   const tags = new Set<string>()
   
@@ -29,7 +26,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     if (post.tags) post.tags.forEach((tag) => tags.add(tag))
   })
 
-  // 3. 静态页面路由
+  // 3. 静态页面
   const staticRoutes = [
     '',
     '/news',
@@ -48,7 +45,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: route === '' ? 1.0 : 0.8,
   }))
 
-  // 4. 文章路由
+  // 4. 文章
   const postRoutes = posts.map((post) => ({
     url: `${baseUrl}/${post.slug}`,
     lastModified: new Date(post.date),
@@ -56,7 +53,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.9,
   }))
 
-  // 5. 游戏路由
+  // 5. 游戏
   const gameRoutes = games.map((game) => ({
     url: `${baseUrl}/games/${game.slug}`,
     lastModified: new Date(),
@@ -64,16 +61,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.9,
   }))
 
-  // 6. 分类路由 (重点修复部分)
+  // 6. 分类 (这里改用了 toSlug，URL 会变成 fps-and-tactical-shooter)
   const categoryRoutes = Array.from(categories).map((category) => ({
-    // 使用 encodeURIComponent 处理特殊字符（如 &、空格），防止 XML 报错
-    url: `${baseUrl}/category/${encodeURIComponent(category.toLowerCase())}`,
+    url: `${baseUrl}/category/${toSlug(category)}`, 
     lastModified: new Date(),
     changeFrequency: 'weekly' as const,
     priority: 0.7,
   }))
 
-  // 7. 标签路由
+  // 7. 标签
   const tagRoutes = Array.from(tags).map((tag) => ({
     url: `${baseUrl}/tag/${toSlug(tag)}`,
     lastModified: new Date(),
