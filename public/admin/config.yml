@@ -32,7 +32,7 @@ collections:
         name: "category"
         widget: "select"
         options:
-          - { label: "FPS & Tactical Shooter", value: "FPS Tactical Shooter" }
+          - { label: "FPS & Tactical Shooter", value: "FPS and Tactical Shooter" }
           - { label: "MOBA", value: "MOBA" }
           - { label: "Battle Royale", value: "Battle Royale" }
           - { label: "MMO / Gacha", value: "MMO / Gacha" }
