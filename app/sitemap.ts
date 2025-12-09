@@ -3,8 +3,7 @@ import { getAllPosts } from '@/lib/posts'
 import { getAllGames } from '@/lib/games'
 import { siteConfig } from '@/lib/siteConfig'
 
-// 辅助函数：与你项目中其他页面使用的 Tag Slug 转换逻辑保持一致
-// 来源参考：app/[slug]/page.tsx
+// 辅助函数：转换 URL Slug
 function toSlug(str: string): string {
   return str
     .toLowerCase()
@@ -14,30 +13,22 @@ function toSlug(str: string): string {
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = siteConfig.url
+  const baseUrl = 'https://www.unbannow.com' // 强制使用你的正式域名
 
-  // 1. 获取所有数据
+  // 1. 获取所有文章和游戏数据
   const posts = await getAllPosts()
   const games = getAllGames()
 
-  // 2. 提取所有唯一的分类 (Categories)
+  // 2. 提取分类和标签
   const categories = new Set<string>()
-  posts.forEach((post) => {
-    if (post.category) {
-      categories.add(post.category)
-    }
-  })
-
-  // 3. 提取所有唯一的标签 (Tags)
   const tags = new Set<string>()
+  
   posts.forEach((post) => {
-    if (post.tags) {
-      post.tags.forEach((tag) => tags.add(tag))
-    }
+    if (post.category) categories.add(post.category)
+    if (post.tags) post.tags.forEach((tag) => tags.add(tag))
   })
 
-  // 4. 定义静态页面路由
-  // priority: 1.0 (首页), 0.8 (主要栏目), 0.5 (其他)
+  // 3. 静态页面路由
   const staticRoutes = [
     '',
     '/news',
@@ -56,17 +47,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: route === '' ? 1.0 : 0.8,
   }))
 
-  // 5. 生成文章路由 (Posts)
-  // 根据 app/[slug]/page.tsx，文章路径是根目录 /slug
+  // 4. 文章路由
   const postRoutes = posts.map((post) => ({
     url: `${baseUrl}/${post.slug}`,
     lastModified: new Date(post.date),
     changeFrequency: 'weekly' as const,
-    priority: 0.9, // 文章是核心内容，权重设高
+    priority: 0.9,
   }))
 
-  // 6. 生成游戏详情路由 (Games)
-  // 根据 app/games/[slug]/page.tsx，路径是 /games/slug
+  // 5. 游戏路由
   const gameRoutes = games.map((game) => ({
     url: `${baseUrl}/games/${game.slug}`,
     lastModified: new Date(),
@@ -74,25 +63,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.9,
   }))
 
-  // 7. 生成分类页面路由 (Categories)
-  // 根据 app/category/[category]/page.tsx
+  // 6. 分类路由
   const categoryRoutes = Array.from(categories).map((category) => ({
-    url: `${baseUrl}/category/${category.toLowerCase()}`, // 分类 URL 通常转小写
+    url: `${baseUrl}/category/${category.toLowerCase()}`,
     lastModified: new Date(),
     changeFrequency: 'weekly' as const,
     priority: 0.7,
   }))
 
-  // 8. 生成标签页面路由 (Tags)
-  // 根据 app/tag/[tagName]/page.tsx
+  // 7. 标签路由
   const tagRoutes = Array.from(tags).map((tag) => ({
-    url: `${baseUrl}/tag/${toSlug(tag)}`, // 使用辅助函数确保 Slug 一致
+    url: `${baseUrl}/tag/${toSlug(tag)}`,
     lastModified: new Date(),
     changeFrequency: 'weekly' as const,
     priority: 0.6,
   }))
 
-  // 9. 合并所有路由并返回
   return [
     ...staticRoutes,
     ...postRoutes,
