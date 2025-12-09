@@ -29,3 +29,13 @@ After that, open this website: <https://www.escapefromtarkov.com/support> and th
 ![customer support](/uploads/3.png "Escape from Tarkov customer support")
 
 [](https://www.escapefromtarkov.com/support?lang=en)
+
+![](/uploads/33.png)
+
+![](/uploads/4.png)
+
+![](/uploads/qq20251209-121704.png)
+
+
+
+Then click “Create a case,” paste your prepared appeal letter in English into the page that opens, and finally submit it. It is recommended that you write more details, clearly explain what happened, and sincerely ask for a chance to have your account restored. Based on previous experience, as long as the ban was caused by account theft or a mistaken judgment, there is generally a good chance that your appeal can be successful.
