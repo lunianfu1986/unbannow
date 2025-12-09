@@ -13,7 +13,8 @@ function toSlug(str: string): string {
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://www.unbannow.com' // 强制使用你的正式域名
+  // 确保使用你的正式域名，不要带末尾斜杠
+  const baseUrl = 'https://www.unbannow.com'
 
   // 1. 获取所有文章和游戏数据
   const posts = await getAllPosts()
@@ -63,9 +64,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.9,
   }))
 
-  // 6. 分类路由
+  // 6. 分类路由 (重点修复部分)
   const categoryRoutes = Array.from(categories).map((category) => ({
-    url: `${baseUrl}/category/${category.toLowerCase()}`,
+    // 使用 encodeURIComponent 处理特殊字符（如 &、空格），防止 XML 报错
+    url: `${baseUrl}/category/${encodeURIComponent(category.toLowerCase())}`,
     lastModified: new Date(),
     changeFrequency: 'weekly' as const,
     priority: 0.7,
