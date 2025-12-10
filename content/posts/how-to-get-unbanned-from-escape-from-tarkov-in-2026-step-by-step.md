@@ -52,12 +52,10 @@ Then click “Create a request,” paste your prepared appeal letter in English 
 
 ### Helpful Appeal Tips：
 
-* #### 1. For the first step, you must select the Account option.
-* #### 2. For the second field, select Issues.
-* #### 3. For the third field, paste your prepared appeal letter in English. You must paste all of it here. If it exceeds 1,500 characters, please delete some parts yourself and shorten it to within 1,500 characters first to make sure it can be submitted.
-* #### 4. After the final step is submitted and you receive a case number, you can continue adding the remaining part of your appeal text under this case number—that is, you can continue to submit the rest of the text. In this way, the entire article of more than 1,500 characters will be fully submitted to the official support team.
-
-
+* #### For the first step, you must select the Account option.
+* #### For the second field, select Issues.
+* #### For the third field, paste your prepared appeal letter in English. You must paste all of it here. If it exceeds 1,500 characters, please delete some parts yourself and shorten it to within 1,500 characters first to make sure it can be submitted.
+* #### After the final step is submitted and you receive a case number, you can continue adding the remaining part of your appeal text under this case number—that is, you can continue to submit the rest of the text. In this way, the entire article of more than 1,500 characters will be fully submitted to the official support team.
 
 ## Escape from Tarkov Ban FAQ
 
