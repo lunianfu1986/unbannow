@@ -1,6 +1,6 @@
 ---
 title: How to Get Unbanned from Escape from Tarkov in 2026 Step by step
-date: 2025-12-09T11:48:00.000+08:00
+date: 2025-12-12T20:45:00.000+08:00
 excerpt: How to Get Unbanned from Escape from Tarkov in 2026 Step by step
 coverImage: /uploads/main_image.jpg
 author: unbannow
