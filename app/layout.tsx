@@ -12,8 +12,8 @@ const inter = Inter({ subsets: ['latin'] })
 export const metadata: Metadata = {
   // 👉 这里保持你现在项目里原来的 metadata 内容就行
   // 不用改我这句示例，直接用你自己的配置
-  title: 'UnbanNow – Game Ban Appeal & Account Recovery Guides',
-  description: '...',
+  title: 'Gaming Account Unban Service for CS2, Escape from Tarkov, Apex, and others',
+  description: 'Professional Gaming Account Unban Service - Get unbanned from CS2, Apex, PUBG, Escape from Tarkov, VAC bans, MapleStory, Overwatch, and many more!',
   // 其他字段随你现在的代码
 }
 
