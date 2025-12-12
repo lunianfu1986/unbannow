@@ -1,9 +1,9 @@
 // app/games/[slug]/page.tsx
 import Link from 'next/link'
 import Image from 'next/image'
-import { notFound } from 'next/navigation'
+import { notFound, redirect } from 'next/navigation'
 import { getAllPosts } from '@/lib/posts'
-import { getAllGames, getGameBySlug } from '@/lib/games'
+import { getAllGames } from '@/lib/games'
 import { formatDate } from '@/lib/utils'
 
 type Props = {
@@ -13,31 +13,57 @@ type Props = {
 }
 
 function normalizeSlug(str: string): string {
-  return str
+  return (str || '')
     .toLowerCase()
     .trim()
     .replace(/\s+/g, '-')
     .replace(/[^a-z0-9-]/g, '')
 }
 
-// 生成静态路径：从 content/games 读取所有游戏
 export async function generateStaticParams() {
   const games = getAllGames()
-  return games.map((game) => ({ slug: game.slug }))
+  // 这里返回 “更靠谱的 slug”：用游戏 title 生成（避免你 content/games 里 slug 写成 {{slug}}）
+  return games.map((g) => ({ slug: normalizeSlug(g.name) }))
 }
 
 export default async function GameDetailPage({ params }: Props) {
-  const game = getGameBySlug(params.slug)
+  const reqSlug = normalizeSlug(params.slug)
+
+  const games = getAllGames()
+
+  // ✅ 兼容：既能用 game.slug 找到，也能用 “title 生成的 slug” 找到
+  const game =
+    games.find((g) => normalizeSlug(g.slug) === reqSlug) ||
+    games.find((g) => normalizeSlug(g.name) === reqSlug)
 
   if (!game) return notFound()
 
-  // 获取所有文章，然后筛选属于该游戏的文章
+  // ✅ 统一规范 URL：永远用 title 生成的 slug（escape-from-tarkov 这种）
+  const canonicalSlug = normalizeSlug(game.name)
+
+  // 如果用户访问了旧的 /games/slug 或其他非规范 slug，自动跳到规范地址
+  if (reqSlug !== canonicalSlug) {
+    redirect(`/games/${canonicalSlug}`)
+  }
+
   const allPosts = await getAllPosts()
 
-  // ✅ 核心修复：把 post.game 和 game.slug 都统一“标准化”再对比
-  const postsForGame = allPosts.filter(
-    (post) => normalizeSlug(post.game || '') === normalizeSlug(game.slug)
-  )
+  // ✅ 文章匹配兜底：不管 post.game 是 "{{slug}}"、"Escape from tarkov"、"escape-from-tarkov"，都尽量匹配上
+  const acceptable = new Set<string>([
+    canonicalSlug,
+    normalizeSlug(game.slug),
+    normalizeSlug(game.name),
+  ])
+
+  const postsForGame = allPosts.filter((post) => {
+    const g = normalizeSlug(post.game || '')
+    if (acceptable.has(g)) return true
+
+    // 再兜一层：如果文章 slug 里包含游戏 slug（很多文章标题都会带游戏名）
+    if ((post.slug || '').includes(canonicalSlug)) return true
+
+    return false
+  })
 
   return (
     <div className="container mx-auto px-4 py-12 max-w-6xl">
@@ -61,7 +87,7 @@ export default async function GameDetailPage({ params }: Props) {
         Back to Games
       </Link>
 
-      {/* 顶部游戏介绍 */}
+      {/* 游戏介绍 */}
       <section className="mb-10">
         <div className="flex flex-col md:flex-row gap-6 items-start">
           <div className="relative w-full md:w-64 h-40 md:h-40 rounded-2xl overflow-hidden shadow-lg">
@@ -95,13 +121,6 @@ export default async function GameDetailPage({ params }: Props) {
                 {game.description}
               </p>
             )}
-
-            <Link
-              href="/games"
-              className="text-sm text-gray-500 dark:text-gray-400 underline underline-offset-4"
-            >
-              ← Back to all games
-            </Link>
           </div>
         </div>
       </section>
