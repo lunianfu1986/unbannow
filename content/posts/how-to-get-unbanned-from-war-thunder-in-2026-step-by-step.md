@@ -19,8 +19,6 @@ seoDescription: Unfairly banned? Here is the ultimate guide to get unbanned from
   War Thunder in 2026. Follow our proven step-by-step instructions to appeal to
   Gaijin support.
 ---
-![]()
-
 **Most War Thunder account bans boil down to one of four common scenarios. Before we dive into the solution, it is important to identify which category you fall into:**
 
 **1. Cheating / Use of Third-Party Software**
