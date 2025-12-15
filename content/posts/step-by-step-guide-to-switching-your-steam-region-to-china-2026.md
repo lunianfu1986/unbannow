@@ -4,7 +4,7 @@ date: 2025-12-01T23:23:00.000+08:00
 excerpt: Step by step guide to switching your steam region to china 2026
 coverImage: /uploads/store_home_share.png
 author: Admin
-category: FPS & Tactical Shooter
+category: Sports
 game: steam
 type: Guide
 tags:
