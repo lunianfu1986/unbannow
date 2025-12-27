@@ -5,17 +5,18 @@ import './globals.css'
 import { ThemeProvider } from '@/components/theme-provider'
 import { Header } from '@/components/header'
 import { Footer } from '@/components/footer'
-import Script from 'next/script'   // ⭐ 新增这一行
+import Script from 'next/script'
+import { GA4PageView } from '@/components/ga4-pageview' // ✅ 新增
 
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  // 👉 这里保持你现在项目里原来的 metadata 内容就行
-  // 不用改我这句示例，直接用你自己的配置
   title: 'Gaming Account Unban Service for CS2, Escape from Tarkov, Apex, and others',
-  description: 'Professional Gaming Account Unban Service - Get unbanned from CS2, Apex, PUBG, Escape from Tarkov, VAC bans, MapleStory, Overwatch, and many more!',
-  // 其他字段随你现在的代码
+  description:
+    'Professional Gaming Account Unban Service - Get unbanned from CS2, Apex, PUBG, Escape from Tarkov, VAC bans, MapleStory, Overwatch, and many more!',
 }
+
+const GA_MEASUREMENT_ID = 'G-BVG0Z8T1EJ'
 
 export default function RootLayout({
   children,
@@ -25,22 +26,31 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
-        {/* ⭐⭐⭐ Google Analytics 4 统计代码开始 ⭐⭐⭐ */}
+        {/* ✅ GA4：加载 gtag（排除 /admin） */}
         <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-BVG0Z8T1EJ"
+          src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
           strategy="afterInteractive"
         />
         <Script id="ga-gtag" strategy="afterInteractive">
           {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-BVG0Z8T1EJ', {
-              page_path: window.location.pathname,
-            });
+            (function () {
+              // 不统计后台 /admin
+              if (window.location && window.location.pathname && window.location.pathname.startsWith('/admin')) return;
+
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              window.gtag = gtag;
+
+              gtag('js', new Date());
+
+              // 关闭自动首屏 page_view，交给下面的 GA4PageView 统一上报（避免首屏重复统计）
+              gtag('config', '${GA_MEASUREMENT_ID}', { send_page_view: false });
+            })();
           `}
         </Script>
-        {/* ⭐⭐⭐ Google Analytics 4 统计代码结束 ⭐⭐⭐ */}
+
+        {/* ✅ Next.js 路由切换 page_view（同时也负责首屏） */}
+        <GA4PageView measurementId={GA_MEASUREMENT_ID} />
 
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <div className="flex min-h-screen flex-col">
