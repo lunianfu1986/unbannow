@@ -6,7 +6,8 @@ import { ThemeProvider } from '@/components/theme-provider'
 import { Header } from '@/components/header'
 import { Footer } from '@/components/footer'
 import Script from 'next/script'
-import { GA4PageView } from '@/components/ga4-pageview' // ✅ 新增
+import { GA4PageView } from '@/components/ga4-pageview'
+import { Suspense } from 'react' // ✅ 新增
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -49,8 +50,10 @@ export default function RootLayout({
           `}
         </Script>
 
-        {/* ✅ Next.js 路由切换 page_view（同时也负责首屏） */}
-        <GA4PageView measurementId={GA_MEASUREMENT_ID} />
+        {/* ✅ 关键修复：useSearchParams() 必须包在 Suspense 里，否则 build/prerender 会报错 */}
+        <Suspense fallback={null}>
+          <GA4PageView measurementId={GA_MEASUREMENT_ID} />
+        </Suspense>
 
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <div className="flex min-h-screen flex-col">
