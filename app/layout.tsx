@@ -29,7 +29,7 @@ export default function RootLayout({
       <body className={inter.className}>
         {/* ✅ GA4：加载 gtag（排除 /admin） */}
         <Script
-          src={`https://www.googletagmanager.com/gtag/js?id=${G-BVG0Z8T1EJ}`}
+          src="https://www.googletagmanager.com/gtag/js?id=G-BVG0Z8T1EJ"
           strategy="afterInteractive"
         />
         <Script id="ga-gtag" strategy="afterInteractive">
