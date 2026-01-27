@@ -52,15 +52,6 @@ export default function RootLayout({
         <script defer src="https://cloud.umami.is/script.js" data-website-id="7cff103d-5f99-4bc6-85a9-801740b212ed"></script>
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7976801863448636"
      crossOrigin="anonymous"></script>
-        <!-- Google tag (gtag.js) -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-BVG0Z8T1EJ"></script>
-        <script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-BVG0Z8T1EJ');
-</script>
 
         {/* ✅ 关键修复：useSearchParams() 必须包在 Suspense 里，否则 build/prerender 会报错 */}
         <Suspense fallback={null}>
