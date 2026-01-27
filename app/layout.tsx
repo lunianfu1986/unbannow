@@ -50,6 +50,8 @@ export default function RootLayout({
           `}
         </Script>
         <script defer src="https://cloud.umami.is/script.js" data-website-id="7cff103d-5f99-4bc6-85a9-801740b212ed"></script>
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7976801863448636"
+     crossorigin="anonymous"></script>
 
         {/* ✅ 关键修复：useSearchParams() 必须包在 Suspense 里，否则 build/prerender 会报错 */}
         <Suspense fallback={null}>
