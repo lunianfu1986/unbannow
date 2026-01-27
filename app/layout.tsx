@@ -29,7 +29,7 @@ export default function RootLayout({
       <body className={inter.className}>
         {/* ✅ GA4：加载 gtag（排除 /admin） */}
         <Script
-          src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
+          src={`https://www.googletagmanager.com/gtag/js?id=${G-BVG0Z8T1EJ}`}
           strategy="afterInteractive"
         />
         <Script id="ga-gtag" strategy="afterInteractive">
@@ -45,7 +45,7 @@ export default function RootLayout({
               gtag('js', new Date());
 
               // 关闭自动首屏 page_view，交给下面的 GA4PageView 统一上报（避免首屏重复统计）
-              gtag('config', '${GA_MEASUREMENT_ID}', { send_page_view: false });
+              gtag('config', '${G-BVG0Z8T1EJ}', { send_page_view: false });
             })();
           `}
         </Script>
@@ -55,7 +55,7 @@ export default function RootLayout({
 
         {/* ✅ 关键修复：useSearchParams() 必须包在 Suspense 里，否则 build/prerender 会报错 */}
         <Suspense fallback={null}>
-          <GA4PageView measurementId={GA_MEASUREMENT_ID} />
+          <GA4PageView measurementId={G-BVG0Z8T1EJ} />
         </Suspense>
 
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
