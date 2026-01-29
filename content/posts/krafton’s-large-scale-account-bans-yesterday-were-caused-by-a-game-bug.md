@@ -3,7 +3,7 @@ title: Krafton’s large-scale account bans yesterday were caused by a game bug
 date: 2026-01-29T23:27:00.000+08:00
 excerpt: Krafton’s large-scale account bans yesterday were caused by a game bug;
   today, a large number of legitimate players have already been unbanned.
-coverImage: /uploads/01ed6d45f6c263de92c3f72372ab7ecd.png
+coverImage: /uploads/pubg-battlegrounds-19vwb.jpg
 author: Admin
 category: FPS and Tactical Shooter
 game: PUBG
@@ -11,7 +11,7 @@ type: News
 tags:
   - PUBG
 readTime: "23232323"
-seoTitle: Krafton’s large-scale account bans yesterday were caused by a game bug
+seoTitle: Kraftons-large-scale-account-bans-yesterday-were-caused-by-a-game-bug
 seoDescription: Krafton’s large-scale account bans yesterday were caused by a
   game bug; today, a large number of legitimate players have already been
   unbanned.
