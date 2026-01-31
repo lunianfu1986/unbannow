@@ -2,8 +2,6 @@ backend:
   name: github
   repo: lunianfu1986/unbannow
   branch: main
-  base_url: https://www.unbannow.com
-  auth_endpoint: /api/auth
 
 media_folder: "public/uploads"
 public_folder: "/uploads"
