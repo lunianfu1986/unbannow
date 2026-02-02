@@ -1,8 +1,12 @@
 backend:
-  name: github
+  name: github-app
   repo: lunianfu1986/unbannow
   branch: main
-  auth_type: pkce
+
+  app_id: 2761211
+
+  auth:
+    type: implicit
 
 media_folder: "public/uploads"
 public_folder: "/uploads"
