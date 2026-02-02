@@ -1,8 +1,8 @@
 backend:
-  name: github-app
+  name: github
   repo: lunianfu1986/unbannow
   branch: main
-  app_id: 2761211
+  auth_type: token
 
 media_folder: "public/uploads"
 public_folder: "/uploads"
