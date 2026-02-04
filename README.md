@@ -21,7 +21,7 @@
 - Open Graph 支持
 - 响应式图片
 
-🚀 **技术栈**
+🚀
 - Next.js 15 (App Router)
 - TypeScript
 - Tailwind CSS
