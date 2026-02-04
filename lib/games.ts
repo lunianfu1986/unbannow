@@ -14,13 +14,32 @@ export type Game = {
 
 const gamesDirectory = path.join(process.cwd(), 'content/games')
 
-// 👇 核心修复：添加标准化函数
+// 标准化 Slug
 function normalizeSlug(str: string): string {
   return str
-    .toLowerCase()                 // 转小写
-    .trim()                        // 去除首尾空格
-    .replace(/\s+/g, '-')          // 把中间的空格变成连字符
-    .replace(/[^a-z0-9-]/g, '')    // 去掉特殊字符
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, '-')
+    .replace(/[^a-z0-9-]/g, '')
+}
+
+// 🔧 新增：标准化图片路径（支持 Keystatic 上传的格式）
+function normalizeImagePath(imagePath?: string): string | undefined {
+  if (!imagePath) return undefined
+  
+  // 如果已经是完整的 URL，直接返回
+  if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
+    return imagePath
+  }
+  
+  // 如果已经以 / 开头，直接返回
+  if (imagePath.startsWith('/')) {
+    return imagePath
+  }
+  
+  // Keystatic 上传的格式：uploads/game-name/image.png
+  // 需要添加前导斜杠：/uploads/game-name/image.png
+  return `/${imagePath}`
 }
 
 // 读取所有游戏
@@ -43,21 +62,17 @@ export function getAllGames(): Game[] {
       const fileContents = fs.readFileSync(fullPath, 'utf8')
       const { data } = matter(fileContents)
 
-      // 如果 frontmatter 里没有 slug，就用文件名
       const fallbackSlug = fileName.replace(/\.(mdx?|ya?ml)$/, '')
-      
-      // 读取原始 slug
       const rawSlug = (data.slug as string) || fallbackSlug
 
       return {
-        // 👇 核心修复：在这里强制转换 Slug
         slug: normalizeSlug(rawSlug),
-        
         name: (data.title as string) || fallbackSlug,
         shortName: data.shortName as string | undefined,
         description: data.description as string | undefined,
         genre: data.genre as string | undefined,
-        coverImage: data.coverImage as string | undefined,
+        // 🔧 修复：标准化图片路径
+        coverImage: normalizeImagePath(data.coverImage as string | undefined),
       }
     })
 
@@ -66,7 +81,6 @@ export function getAllGames(): Game[] {
 
 export function getGameBySlug(slug: string): Game | undefined {
   const games = getAllGames()
-  // 👇 核心修复：比对时也使用标准化后的 slug
   const targetSlug = normalizeSlug(slug)
   return games.find((g) => g.slug === targetSlug)
 }
