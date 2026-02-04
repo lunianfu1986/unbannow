@@ -8,20 +8,37 @@ const postsDirectory = path.join(process.cwd(), 'content/posts')
 
 /**
  * 🔒 Slug 自动规范化（核心）
- * 统一为：a-z 0-9 -
  */
 export function normalizeSlug(input: string): string {
   return input
     .toLowerCase()
     .trim()
-    .replace(/[’‘“”"'`]/g, '')      // 去掉智能引号
-    .replace(/&/g, 'and')           // & → and
-    .replace(/[^a-z0-9]+/g, '-')    // 非法字符 → -
-    .replace(/-+/g, '-')            // 合并多个 -
-    .replace(/^-|-$/g, '')          // 去首尾 -
+    .replace(/[''"""'`]/g, '')
+    .replace(/&/g, 'and')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '')
 }
 
-// 👇 类型定义（你原有的，完整保留）
+// 🔧 新增：标准化图片路径（支持 Keystatic 上传的格式）
+function normalizeImagePath(imagePath?: string): string | undefined {
+  if (!imagePath) return undefined
+  
+  // 如果已经是完整的 URL，直接返回
+  if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
+    return imagePath
+  }
+  
+  // 如果已经以 / 开头，直接返回
+  if (imagePath.startsWith('/')) {
+    return imagePath
+  }
+  
+  // Keystatic 上传的格式：uploads/post-slug/image.png
+  // 需要添加前导斜杠：/uploads/post-slug/image.png
+  return `/${imagePath}`
+}
+
 export interface Post {
   slug: string
   title: string
@@ -54,7 +71,7 @@ function normalizeDate(raw: unknown): string {
   return new Date().toISOString()
 }
 
-// ✅ 获取所有文章（首页 / 列表）
+// ✅ 获取所有文章
 export async function getAllPosts(): Promise<Post[]> {
   if (!fs.existsSync(postsDirectory)) return []
 
@@ -65,7 +82,7 @@ export async function getAllPosts(): Promise<Post[]> {
       .filter((fileName) => fileName.endsWith('.md'))
       .map(async (fileName) => {
         const rawSlug = fileName.replace(/\.md$/, '')
-        const slug = normalizeSlug(rawSlug) // ⭐ 关键
+        const slug = normalizeSlug(rawSlug)
 
         const fullPath = path.join(postsDirectory, fileName)
         const fileContents = fs.readFileSync(fullPath, 'utf8')
@@ -81,51 +98,76 @@ export async function getAllPosts(): Promise<Post[]> {
           date,
           excerpt: data.excerpt || '',
           content: contentHtml,
-          coverImage:
-            data.coverImage ||
-            'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800',
-          author: data.author || 'Samantha',
+          // 🔧 修复：标准化图片路径
+          coverImage: normalizeImagePath(data.coverImage as string | undefined) || '/images/default-cover.jpg',
+          author: data.author || 'UnbanNow',
           category: data.category,
           tags: data.tags || [],
-          readTime: data.readTime || calculateReadTime(content),
+          readTime: calculateReadTime(content),
           game: data.game,
           type: data.type,
           seoTitle: data.seoTitle,
           seoDescription: data.seoDescription,
-        } as Post
+        }
       })
   )
 
-  return allPostsData.sort((a, b) => (a.date < b.date ? 1 : -1))
+  return allPostsData.sort((a, b) => (a.date > b.date ? -1 : 1))
 }
 
-// ✅ 根据 slug 获取单篇文章（彻底防 404）
+// ✅ 根据 Slug 获取单篇文章
 export async function getPostBySlug(slug: string): Promise<Post | null> {
-  try {
-    const normalizedSlug = normalizeSlug(slug)
+  const normalizedSlug = normalizeSlug(slug)
 
-    // 👉 不再直接拼路径，而是从列表里找
-    const allPosts = await getAllPosts()
-    const post = allPosts.find((p) => p.slug === normalizedSlug)
+  if (!fs.existsSync(postsDirectory)) return null
 
-    return post || null
-  } catch {
-    return null
+  const fileNames = fs.readdirSync(postsDirectory)
+  const matchingFile = fileNames.find((fileName) => {
+    const fileSlug = normalizeSlug(fileName.replace(/\.md$/, ''))
+    return fileSlug === normalizedSlug
+  })
+
+  if (!matchingFile) return null
+
+  const fullPath = path.join(postsDirectory, matchingFile)
+  const fileContents = fs.readFileSync(fullPath, 'utf8')
+  const { data, content } = matter(fileContents)
+
+  const processedContent = await remark().use(html).process(content)
+  const contentHtml = processedContent.toString()
+  const date = normalizeDate(data.date)
+
+  return {
+    slug: normalizedSlug,
+    title: data.title || '',
+    date,
+    excerpt: data.excerpt || '',
+    content: contentHtml,
+    // 🔧 修复：标准化图片路径
+    coverImage: normalizeImagePath(data.coverImage as string | undefined) || '/images/default-cover.jpg',
+    author: data.author || 'UnbanNow',
+    category: data.category,
+    tags: data.tags || [],
+    readTime: calculateReadTime(content),
+    game: data.game,
+    type: data.type,
+    seoTitle: data.seoTitle,
+    seoDescription: data.seoDescription,
   }
 }
 
-// 分类过滤
+// 其他函数保持不变...
 export async function getPostsByCategory(category: string): Promise<Post[]> {
   const allPosts = await getAllPosts()
-  return allPosts.filter(
-    (post) => post.category?.toLowerCase() === category.toLowerCase()
-  )
+  return allPosts.filter((post) => post.category === category)
 }
 
-// 标签过滤
 export async function getPostsByTag(tag: string): Promise<Post[]> {
   const allPosts = await getAllPosts()
-  return allPosts.filter((post) =>
-    post.tags?.some((t) => t.toLowerCase() === tag.toLowerCase())
-  )
+  return allPosts.filter((post) => post.tags?.includes(tag))
+}
+
+export async function getPostsByGame(game: string): Promise<Post[]> {
+  const allPosts = await getAllPosts()
+  return allPosts.filter((post) => post.game === game)
 }
